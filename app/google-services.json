@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "745141993650",
+    "firebase_url": "https://avito-55e51-default-rtdb.firebaseio.com",
+    "project_id": "avito-55e51",
+    "storage_bucket": "avito-55e51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745141993650:android:bd0388bdcaa6fe060109ab",
+        "android_client_info": {
+          "package_name": "com.application.lose_animals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745141993650-e3bucvr6ptvldf85r9vo82883flrjrab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBngx-2DZdYgHbKsHB7P8YVuYLekAWU-R8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745141993650-e3bucvr6ptvldf85r9vo82883flrjrab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745141993650:android:6ba5d2c519eace260109ab",
+        "android_client_info": {
+          "package_name": "com.example.newanimals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745141993650-e3bucvr6ptvldf85r9vo82883flrjrab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBngx-2DZdYgHbKsHB7P8YVuYLekAWU-R8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745141993650-e3bucvr6ptvldf85r9vo82883flrjrab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
