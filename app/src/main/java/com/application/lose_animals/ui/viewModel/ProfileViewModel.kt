@@ -1,10 +1,11 @@
-package com.application.lose_animals.ui.viewModel
+package com.application.lose_animals.ui.viewmodel
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.lose_animals.data.model.Animal
 import com.application.lose_animals.data.model.User
-import com.application.lose_animals.data.repository.AuthRepositoryImpl
 import com.application.lose_animals.domain.repository.AnimalRepository
+import com.application.lose_animals.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val animalRepository: AnimalRepository,
-    private val authRepository: AuthRepositoryImpl
+    private val authRepository: AuthRepository,
+    private val animalRepository: AnimalRepository
 ) : ViewModel() {
 
     private val _user = MutableStateFlow<User?>(null)
@@ -33,9 +34,9 @@ class ProfileViewModel @Inject constructor(
     private fun loadUserProfile() {
         viewModelScope.launch {
             val currentUser = authRepository.getCurrentUser()
-            currentUser?.let { user ->
-                _user.value = user
-                loadUserAnimals(user.id) // Загрузить объявления пользователя
+            _user.value = currentUser
+            currentUser?.let {
+                loadUserAnimals(it.id)
             }
         }
     }

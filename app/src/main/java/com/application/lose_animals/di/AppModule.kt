@@ -25,4 +25,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAnimalRepository(firebaseSource: FirebaseSource): AnimalRepository = AnimalRepositoryImpl(firebaseSource)
+
+
+
 }

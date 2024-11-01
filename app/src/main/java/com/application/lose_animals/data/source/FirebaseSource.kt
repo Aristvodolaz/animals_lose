@@ -23,4 +23,14 @@ class FirebaseSource @Inject constructor(
         val documentSnapshot = firestore.collection("animals").document(id).get().await()
         return documentSnapshot.toObject(Animal::class.java)
     }
+
+    suspend fun updateAnimal(animal: Animal) {
+        val animalRef = firestore.collection("animals").document(animal.id)
+        animalRef.set(animal).await() // Используем set для обновления документа
+    }
+
+    suspend fun deleteAnimal(animalId: String) {
+        val animalRef = firestore.collection("animals").document(animalId)
+        animalRef.delete().await() // Удаляем документ
+    }
 }

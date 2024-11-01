@@ -86,6 +86,8 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.45")
     kapt("com.google.dagger:hilt-compiler:2.45")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation ("com.google.dagger:hilt-android-gradle-plugin:2.5")
+
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
@@ -111,7 +113,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
-
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

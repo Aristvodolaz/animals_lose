@@ -1,5 +1,4 @@
 package com.application.lose_animals
-
 import androidx.activity.compose.setContent
 
 
