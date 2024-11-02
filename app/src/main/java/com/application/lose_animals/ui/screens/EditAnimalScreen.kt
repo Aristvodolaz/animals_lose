@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.lose_animals.data.model.Animal
-import com.application.lose_animals.ui.viewmodel.EditAnimalViewModel
+import com.application.lose_animals.ui.viewModel.EditAnimalViewModel
 
 @Composable
 fun EditAnimalScreen(

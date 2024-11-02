@@ -81,12 +81,14 @@ dependencies {
     // Вспомогательные библиотеки Compose
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.2")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.2")
-
+    implementation ("androidx.compose.material3:material3:1.2.0")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
+    implementation ("androidx.compose.material:material-icons-extended:1.5.2")
     // Hilt для внедрения зависимостей
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-compiler:2.45")
+    implementation("com.google.dagger:hilt-android:2.37")
+    kapt("com.google.dagger:hilt-compiler:2.37")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation ("com.google.dagger:hilt-android-gradle-plugin:2.5")
+    implementation ("com.google.dagger:hilt-android-gradle-plugin:2.37")
 
 
     // Firebase
@@ -120,4 +122,8 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.2")
+
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation("com.github.bumptech.glide:annotations:4.12.0")
+
 }

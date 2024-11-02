@@ -1,4 +1,4 @@
-package com.application.lose_animals.ui.viewmodel
+package com.application.lose_animals.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +16,7 @@ class EditAnimalViewModel @Inject constructor(
     fun updateAnimal(animal: Animal, onComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
-                updateAnimalUseCase(animal)
+                updateAnimalUseCase(animal) // Вызываем Use Case для обновления
                 onComplete(true)
             } catch (e: Exception) {
                 onComplete(false)

@@ -6,7 +6,7 @@ pluginManagement {
     }
 
     plugins {
-        id("com.google.dagger.hilt.android") version "2.45"
+        id("com.google.dagger.hilt.android") version "2.48"  // Используйте одну и ту же версию
     }
 }
 
