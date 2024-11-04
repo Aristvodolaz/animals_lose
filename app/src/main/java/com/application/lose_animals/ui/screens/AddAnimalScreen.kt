@@ -1,26 +1,23 @@
 package com.application.lose_animals.ui.screens
-import android.content.Intent
+
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.toSize
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
+import com.application.lose_animals.ui.components.CustomTextField
+import com.application.lose_animals.ui.components.DropdownMenuField
 import com.application.lose_animals.ui.viewModel.AddAnimalViewModel
 
 @Composable
@@ -35,24 +32,52 @@ fun AddAnimalScreen(
     var status by remember { mutableStateOf("Lost") }
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
 
-    // Launcher для выбора изображения
-    val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             selectedImageUri = uri
-            photoUrl = uri.toString() // Сохраняем URI как строку для хранения
+            photoUrl = uri.toString()
         }
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        TextField(value = name, onValueChange = { name = it }, label = { Text("Name") })
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(value = description, onValueChange = { description = it }, label = { Text("Description") })
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(value = location, onValueChange = { location = it }, label = { Text("Location") })
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .background(MaterialTheme.colorScheme.background),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Add a Lost/Found Animal",
+            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Name Input
+        CustomTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = "Animal Name"
+        )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Отображение выбранного изображения
+        // Description Input
+        CustomTextField(
+            value = description,
+            onValueChange = { description = it },
+            label = "Description"
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Location Input
+        CustomTextField(
+            value = location,
+            onValueChange = { location = it },
+            label = "Location"
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Image Preview
         selectedImageUri?.let { uri ->
             Image(
                 painter = rememberImagePainter(uri),
@@ -61,30 +86,42 @@ fun AddAnimalScreen(
                     .fillMaxWidth()
                     .height(200.dp)
                     .padding(bottom = 8.dp)
-                    .clickable {
-                        // Добавьте функциональность, если хотите изменить изображение
-                    }
+                    .clickable { /* Implement functionality if you want to change the image */ }
             )
+        } ?: run {
+            Text("No image selected", color = Color.Gray, modifier = Modifier.padding(bottom = 8.dp))
         }
 
-        // Кнопка для выбора изображения
-        Button(onClick = { launcher.launch("image/*") }) {
+        // Select Image Button
+        Button(onClick = { launcher.launch("image/*") }, modifier = Modifier.fillMaxWidth()) {
             Text("Select Image")
         }
-
         Spacer(modifier = Modifier.height(8.dp))
 
-        TextField(value = status, onValueChange = { status = it }, label = { Text("Status (Lost/Found)") })
+        // Status Dropdown Menu
+        DropdownMenuField(
+            label = "Status",
+            selectedItem = status,
+            onItemSelected = { status = it },
+            options = listOf("Lost", "Found")
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            viewModel.addAnimal(name, description, location, photoUrl.ifEmpty { null }, status) { success ->
-                if (success) {
-                    onAnimalAdded()
+        // Add Animal Button
+        Button(
+            onClick = {
+                viewModel.addAnimal(name, description, location, photoUrl.ifEmpty { null }, status) { success ->
+                    if (success) {
+                        onAnimalAdded()
+                    }
                 }
-            }
-        }) {
-            Text("Add Animal")
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text("Add Animal", color = Color.White)
         }
     }
 }

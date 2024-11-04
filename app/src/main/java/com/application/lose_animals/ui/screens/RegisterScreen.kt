@@ -23,7 +23,14 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
     var password by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     val authState by viewModel.authState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Error) {
+            val message = (authState as AuthState.Error).message
+            snackbarHostState.showSnackbar(message)
+        }
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -91,5 +98,6 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
                 Text("Already have an account? Login")
             }
         }
+        SnackbarHost(hostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
     }
 }

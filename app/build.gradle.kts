@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.firebase.storage.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,21 +74,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Jetpack Compose
-    implementation("androidx.compose.ui:ui:1.5.2")
-    implementation("androidx.compose.material3:material3:1.1.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.5.2")
-    implementation("androidx.navigation:navigation-compose:2.7.2") // Навигация для Compose
+    implementation("androidx.compose.ui:ui:1.7.5")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.5")
+    implementation("androidx.navigation:navigation-compose:2.8.3") // Навигация для Compose
 
     // Вспомогательные библиотеки Compose
-    debugImplementation("androidx.compose.ui:ui-tooling:1.5.2")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.2")
-    implementation ("androidx.compose.material3:material3:1.2.0")
-    implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
-    implementation ("androidx.compose.material:material-icons-extended:1.5.2")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.5")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.5")
+    implementation ("androidx.compose.material:material-icons-extended:1.7.5")
     // Hilt для внедрения зависимостей
     implementation("com.google.dagger:hilt-android:2.37")
     kapt("com.google.dagger:hilt-compiler:2.37")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation ("com.google.dagger:hilt-android-gradle-plugin:2.37")
 
 
@@ -126,4 +124,20 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.github.bumptech.glide:annotations:4.12.0")
 
+    // Material3 for Jetpack Compose
+    implementation("androidx.compose.material3:material3:1.1.0") // Latest version
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.0") // Latest version
+    implementation("androidx.compose.material:material-icons-extended:1.1.0") // For extended icons
+
+
+    // Navigation for Compose
+    implementation("androidx.navigation:navigation-compose:2.8.3") // Navigation for Compose
+
+    // Other required Compose dependencies
+    implementation("androidx.compose.ui:ui:1.7.5")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.activity:activity-compose:1.9.3")
+
+    implementation ("androidx.compose.material:material:1.7.5")
 }
