@@ -1,5 +1,6 @@
 package com.application.lose_animals
 
+
 import AnimalListScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -17,8 +18,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.material3.*
 import com.application.lose_animals.ui.components.BottomNavigationBar
-
-
 @Composable
 fun LostAnimalsApp() {
     val navController = rememberNavController()
@@ -26,6 +25,7 @@ fun LostAnimalsApp() {
     val isAuthenticated by viewModel.isAuthenticated.collectAsState()
     var currentDestination by remember { mutableStateOf("login") }
 
+    // Wrap Scaffold with BottomBar to show BottomNavigation only if authenticated
     Scaffold(
         bottomBar = {
             if (isAuthenticated) {
@@ -33,8 +33,8 @@ fun LostAnimalsApp() {
                     currentDestination = currentDestination,
                     onNavigateToAddAnimal = { navController.navigate("addPets") },
                     onNavigateToProfile = { navController.navigate("profile") },
-                    onNavigateToPets = { navController.navigate("pets") },
-                    )
+                    onNavigateToPets = { navController.navigate("pets") }
+                )
             }
         }
     ) { innerPadding ->
@@ -54,7 +54,7 @@ fun LostAnimalsApp() {
             composable("addPets") {
                 currentDestination = "addPets"
                 AddAnimalScreen(onAnimalAdded = {
-                    navController.navigate("addPets")
+                    navController.navigate("profile")
                 })
             }
             composable("login") {
@@ -83,6 +83,20 @@ fun LostAnimalsApp() {
                     }
                 )
             }
+            composable("pets") {
+                currentDestination = "pets"
+                AnimalListScreen(navController)
+            }
+            composable("animalDetail/{animalId}") { backStackEntry ->
+                currentDestination = "animalDetail"
+                val animalId = backStackEntry.arguments?.getString("animalId")
+                if (animalId != null) {
+                    // Use the animalId to get details for the specific animal
+                    AnimalDetailScreen(animalId = animalId)
+                } else {
+                    Text(text = "Animal not found")
+                }
+            }
             composable("editAnimal/{animalId}") { backStackEntry ->
                 currentDestination = "editAnimal"
                 val animalId = backStackEntry.arguments?.getString("animalId")
@@ -96,10 +110,6 @@ fun LostAnimalsApp() {
                         Text(text = "Loading animal details...")
                     }
                 }
-            }
-            composable("pets") {
-                currentDestination = "pets"
-                AnimalListScreen(navController)
             }
         }
     }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,7 +33,9 @@ fun AddAnimalScreen(
     var photoUrl by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("Lost") }
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
 
+    // Launcher for selecting image
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             selectedImageUri = uri
@@ -39,11 +43,15 @@ fun AddAnimalScreen(
         }
     }
 
+    // Scrollable column
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(scrollState), // Makes the layout scrollable
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -78,24 +86,38 @@ fun AddAnimalScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         // Image Preview
-        selectedImageUri?.let { uri ->
+        if (selectedImageUri != null) {
             Image(
-                painter = rememberImagePainter(uri),
+                painter = rememberImagePainter(selectedImageUri),
                 contentDescription = "Selected Image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .padding(bottom = 8.dp)
-                    .clickable { /* Implement functionality if you want to change the image */ }
+                    .clickable {
+                        // Add functionality to remove or change image
+                    }
             )
-        } ?: run {
-            Text("No image selected", color = Color.Gray, modifier = Modifier.padding(bottom = 8.dp))
+        } else {
+            // Placeholder when no image is selected
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(Color.Gray.copy(alpha = 0.3f))
+                    .clickable { launcher.launch("image/*") },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tap to select an image",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
 
         // Select Image Button
-        Button(onClick = { launcher.launch("image/*") }, modifier = Modifier.fillMaxWidth()) {
-            Text("Select Image")
-        }
+
         Spacer(modifier = Modifier.height(8.dp))
 
         // Status Dropdown Menu
@@ -110,10 +132,12 @@ fun AddAnimalScreen(
         // Add Animal Button
         Button(
             onClick = {
+                isLoading = true
                 viewModel.addAnimal(name, description, location, photoUrl.ifEmpty { null }, status) { success ->
                     if (success) {
                         onAnimalAdded()
                     }
+                    isLoading = false
                 }
             },
             modifier = Modifier.fillMaxWidth(),
@@ -121,7 +145,14 @@ fun AddAnimalScreen(
                 containerColor = MaterialTheme.colorScheme.primary
             )
         ) {
-            Text("Add Animal", color = Color.White)
+            if (isLoading) {
+                CircularProgressIndicator(
+                    color = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            } else {
+                Text("Add Animal", color = Color.White)
+            }
         }
     }
 }

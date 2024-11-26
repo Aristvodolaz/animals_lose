@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
+
 @Composable
 fun BottomNavigationBar(
     currentDestination: String,
@@ -22,7 +23,6 @@ fun BottomNavigationBar(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = Color.White
     ) {
-
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Pets, contentDescription = "Pets") },
             label = { Text("Pets") },
@@ -41,10 +41,9 @@ fun BottomNavigationBar(
             selected = currentDestination == "profile",
             onClick = onNavigateToProfile
         )
-
-
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

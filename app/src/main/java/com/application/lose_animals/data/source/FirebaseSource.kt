@@ -7,30 +7,43 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class FirebaseSource @Inject constructor(
-    private val firestore: FirebaseFirestore
-) {
+class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestore) {
+
+    // Get all animals from Firestore and wrap in a Flow
     fun getAnimals(): Flow<List<Animal>> = flow {
-        val snapshot = firestore.collection("animals").get().await()
-        emit(snapshot.toObjects(Animal::class.java))
+        try {
+            val snapshot = firestore.collection("animals").get().await() // Fetch all animals from the "animals" collection
+            val animals = snapshot.toObjects(Animal::class.java)  // Deserialize the Firestore documents into Animal objects
+            emit(animals)  // Emit the list of animals as a flow
+        } catch (e: Exception) {
+            emit(emptyList())  // In case of an error, emit an empty list
+        }
     }
 
+    // Add a new animal document to Firestore
     suspend fun addAnimal(animal: Animal) {
-        firestore.collection("animals").add(animal).await()
+        firestore.collection("animals").add(animal).await() // Add a new animal to the collection
     }
 
-    suspend fun getAnimalById(id: String): Animal? {
-        val documentSnapshot = firestore.collection("animals").document(id).get().await()
-        return documentSnapshot.toObject(Animal::class.java)
-    }
-
+    // Update an existing animal document in Firestore
     suspend fun updateAnimal(animal: Animal) {
-        val animalRef = firestore.collection("animals").document(animal.id)
-        animalRef.set(animal).await() // Используем set для обновления документа
+        val animalDocRef = firestore.collection("animals").document(animal.id) // Reference to a specific animal document
+        animalDocRef.set(animal).await()  // Update the animal data
     }
 
+    // Delete an animal document from Firestore by its ID
     suspend fun deleteAnimal(animalId: String) {
-        val animalRef = firestore.collection("animals").document(animalId)
-        animalRef.delete().await() // Удаляем документ
+        val animalDocRef = firestore.collection("animals").document(animalId) // Reference to the animal document by ID
+        animalDocRef.delete().await()  // Delete the document from Firestore
+    }
+
+    // Get a specific animal by its ID
+    suspend fun getAnimalById(animalId: String): Animal? {
+        return try {
+            val snapshot = firestore.collection("animals").document(animalId).get().await() // Fetch the animal document by ID
+            snapshot.toObject(Animal::class.java)  // Deserialize the document into an Animal object
+        } catch (e: Exception) {
+            null // Return null if an error occurs (e.g., document not found)
+        }
     }
 }

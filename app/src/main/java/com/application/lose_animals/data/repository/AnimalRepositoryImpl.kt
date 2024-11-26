@@ -11,25 +11,31 @@ class AnimalRepositoryImpl @Inject constructor(
     private val firebaseSource: FirebaseSource
 ) : AnimalRepository {
 
+    // Get all animals from the repository (calls FirebaseSource)
     override fun getAnimals(): Flow<List<Animal>> = firebaseSource.getAnimals()
 
+    // Add a new animal (calls FirebaseSource)
     override suspend fun addAnimal(animal: Animal) = firebaseSource.addAnimal(animal)
 
-    override suspend fun getAnimalById(id: String): Animal? {
-        return firebaseSource.getAnimalById(id)
+    // Get a specific animal by its ID (calls FirebaseSource)
+    override suspend fun getAnimalById(animalId: String): Animal? {
+        return firebaseSource.getAnimalById(animalId) // Now calling FirebaseSource's getAnimalById method
     }
 
+    // Get animals owned by a user (filtering animals by userId)
     override fun getUserAnimals(userId: String): Flow<List<Animal>> {
         return firebaseSource.getAnimals().map { animals ->
-            animals.filter { it.userId == userId }
+            animals.filter { it.userId == userId } // Filter animals by userId
         }
     }
 
+    // Update an animal (calls FirebaseSource)
     override suspend fun updateAnimal(animal: Animal) {
-        firebaseSource.updateAnimal(animal) // Вызов метода обновления из FirebaseSource
+        firebaseSource.updateAnimal(animal) // Calling FirebaseSource's update method
     }
 
+    // Delete an animal (calls FirebaseSource)
     override suspend fun deleteAnimal(animalId: String) {
-        firebaseSource.deleteAnimal(animalId)
+        firebaseSource.deleteAnimal(animalId) // Calling FirebaseSource's delete method
     }
 }
