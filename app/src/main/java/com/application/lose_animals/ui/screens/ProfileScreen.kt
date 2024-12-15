@@ -19,7 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.application.lose_animals.R
 import com.application.lose_animals.data.model.User
-import com.application.lose_animals.ui.components.AnimalCard
 import com.application.lose_animals.ui.components.PersonCard
 import com.application.lose_animals.ui.viewModel.ProfileViewModel
 

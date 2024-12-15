@@ -1,7 +1,6 @@
 package com.application.lose_animals
 
 
-import com.application.lose_animals.ui.screens.animals.AnimalListScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -10,15 +9,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.application.lose_animals.data.model.Animal
 import com.application.lose_animals.ui.screens.*
 import com.application.lose_animals.ui.viewModel.MainViewModel
 import androidx.compose.material3.*
 import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.ui.components.BottomNavigationBar
-import com.application.lose_animals.ui.screens.animals.AddAnimalScreen
-import com.application.lose_animals.ui.screens.animals.AnimalDetailScreen
-import com.application.lose_animals.ui.screens.animals.EditAnimalScreen
+
 
 @Composable
 fun LostAnimalsApp() {

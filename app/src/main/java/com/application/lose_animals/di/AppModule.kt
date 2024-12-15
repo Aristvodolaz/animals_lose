@@ -1,12 +1,12 @@
 package com.application.lose_animals.di
 
-import com.application.lose_animals.data.repository.AnimalRepositoryImpl
 import com.application.lose_animals.data.repository.AuthRepositoryImpl
+import com.application.lose_animals.data.repository.PersonRepositoryImpl
 import com.application.lose_animals.data.source.FirebaseSource
-import com.application.lose_animals.domain.repository.AnimalRepository
 import com.application.lose_animals.domain.repository.AuthRepository
-import com.application.lose_animals.domain.usecase.GetAnimalsUseCase
-import com.application.lose_animals.domain.usecase.UpdateAnimalUseCase
+import com.application.lose_animals.domain.repository.PersonRepository
+import com.application.lose_animals.domain.usecase.GetPersonsUseCase
+import com.application.lose_animals.domain.usecase.UpdatePersonUseCase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -53,7 +53,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAnimalRepository(firebaseSource: FirebaseSource): AnimalRepository = AnimalRepositoryImpl(firebaseSource)
+    fun providePersonRepository(firebaseSource: FirebaseSource): PersonRepository = PersonRepositoryImpl(firebaseSource)
 
     @Provides
     @Singleton
@@ -61,9 +61,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAnimalsUseCase(repository: AnimalRepository): GetAnimalsUseCase = GetAnimalsUseCase(repository)
+    fun provideGetPersonsUseCase(repository: PersonRepository): GetPersonsUseCase = GetPersonsUseCase(repository)
 
     @Provides
     @Singleton
-    fun provideUpdateAnimalUseCase(repository: AnimalRepository): UpdateAnimalUseCase = UpdateAnimalUseCase(repository)
+    fun provideUpdatePersonUseCase(repository: PersonRepository): UpdatePersonUseCase = UpdatePersonUseCase(repository)
 }
