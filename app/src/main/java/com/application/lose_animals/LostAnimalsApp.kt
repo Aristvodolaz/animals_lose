@@ -1,23 +1,25 @@
 package com.application.lose_animals
 
 
-import AnimalListScreen
+import com.application.lose_animals.ui.screens.animals.AnimalListScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.application.lose_animals.data.model.Animal
 import com.application.lose_animals.ui.screens.*
 import com.application.lose_animals.ui.viewModel.MainViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 import androidx.compose.material3.*
+import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.ui.components.BottomNavigationBar
+import com.application.lose_animals.ui.screens.animals.AddAnimalScreen
+import com.application.lose_animals.ui.screens.animals.AnimalDetailScreen
+import com.application.lose_animals.ui.screens.animals.EditAnimalScreen
+
 @Composable
 fun LostAnimalsApp() {
     val navController = rememberNavController()
@@ -31,9 +33,9 @@ fun LostAnimalsApp() {
             if (isAuthenticated) {
                 BottomNavigationBar(
                     currentDestination = currentDestination,
-                    onNavigateToAddAnimal = { navController.navigate("addPets") },
+                    onNavigateToAddPerson = { navController.navigate("addPerson") },
                     onNavigateToProfile = { navController.navigate("profile") },
-                    onNavigateToPets = { navController.navigate("pets") }
+                    onNavigateToPeople = { navController.navigate("people") }
                 )
             }
         }
@@ -51,9 +53,9 @@ fun LostAnimalsApp() {
                     }
                 })
             }
-            composable("addPets") {
-                currentDestination = "addPets"
-                AddAnimalScreen(onAnimalAdded = {
+            composable("addPerson") {
+                currentDestination = "addPerson"
+                AddPersonScreen(onPersonAdded = {
                     navController.navigate("profile")
                 })
             }
@@ -83,31 +85,33 @@ fun LostAnimalsApp() {
                     }
                 )
             }
-            composable("pets") {
-                currentDestination = "pets"
-                AnimalListScreen(navController)
+            composable("people") {
+                currentDestination = "people"
+                PersonListScreen(navController)
             }
-            composable("animalDetail/{animalId}") { backStackEntry ->
-                currentDestination = "animalDetail"
-                val animalId = backStackEntry.arguments?.getString("animalId")
-                if (animalId != null) {
-                    // Use the animalId to get details for the specific animal
-                    AnimalDetailScreen(animalId = animalId)
+            composable("personDetail/{personId}") { backStackEntry ->
+                currentDestination = "personDetail"
+                val personId = backStackEntry.arguments?.getString("personId")
+                if (personId != null) {
+                    PersonDetailScreen(personId = personId)
                 } else {
-                    Text(text = "Animal not found")
+                    Text(text = "Person not found")
                 }
             }
-            composable("editAnimal/{animalId}") { backStackEntry ->
-                currentDestination = "editAnimal"
-                val animalId = backStackEntry.arguments?.getString("animalId")
-                if (animalId != null) {
-                    var animal by remember { mutableStateOf<Animal?>(null) }
-                    animal?.let { animal ->
-                        EditAnimalScreen(animal = animal) {
+            composable("editPerson/{personId}") { backStackEntry ->
+                currentDestination = "editPerson"
+                val personId = backStackEntry.arguments?.getString("personId")
+                if (personId != null) {
+                    var person by remember { mutableStateOf<Person?>(null) }
+                    LaunchedEffect(personId) {
+                        person = viewModel.getPersonById(personId)
+                    }
+                    person?.let { person ->
+                        EditPersonScreen(person = person) {
                             navController.navigate("profile")
                         }
                     } ?: run {
-                        Text(text = "Loading animal details...")
+                        Text(text = "Loading person details...")
                     }
                 }
             }

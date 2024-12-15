@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,41 +15,40 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.application.lose_animals.R
 import com.application.lose_animals.data.model.User
 import com.application.lose_animals.ui.components.AnimalCard
+import com.application.lose_animals.ui.components.PersonCard
 import com.application.lose_animals.ui.viewModel.ProfileViewModel
 
 @Composable
 fun ProfileScreen(
-    navController: NavHostController,
+    navController: NavController,
     onLogout: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val user by viewModel.user.collectAsState()
-    val userAnimals by viewModel.userAnimals.collectAsState()
+    val userPersons by viewModel.userPersons.collectAsState()
 
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)
         .background(MaterialTheme.colorScheme.background)) {
 
-        // Profile Header
         HeaderSection(user = user)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Animals List
         LazyColumn {
-            items(userAnimals) { animal ->
-                AnimalCard(animal = animal, onClick = {
-                    navController.navigate("editAnimal/${animal.id}")
+            items(userPersons) { person ->
+                PersonCard(person = person, onClick = {
+                    navController.navigate("editPerson/${person.id}")
                 })
             }
         }
 
-        // Logout Button
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = onLogout,

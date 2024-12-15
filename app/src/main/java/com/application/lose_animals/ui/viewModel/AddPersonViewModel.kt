@@ -4,9 +4,10 @@ import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.application.lose_animals.data.model.Animal
-import com.application.lose_animals.domain.repository.AnimalRepository
+import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.data.repository.AuthRepositoryImpl
+import com.application.lose_animals.domain.repository.PersonRepository
+
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,17 +16,17 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
-class AddAnimalViewModel @Inject constructor(
-    private val animalRepository: AnimalRepository,
+class AddPersonViewModel @Inject constructor(
+    private val personRepository: PersonRepository,
     private val authRepository: AuthRepositoryImpl,
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage
 ) : ViewModel() {
 
-    fun addAnimal(
+    fun addPerson(
         name: String,
         description: String,
-        location: String,
+        lastSeenLocation: String,
         photoUri: String?,
         status: String,
         onComplete: (Boolean) -> Unit
@@ -35,17 +36,17 @@ class AddAnimalViewModel @Inject constructor(
                 val userId = authRepository.getCurrentUser()?.id ?: return@launch
                 val photoUrl = photoUri?.let { uploadImageToFirebase(it.toUri()) }
 
-                val animal = Animal(
-                    id = "", // ID будет автоматически сгенерирован Firebase
+                val person = Person(
+                    id = "",
                     name = name,
                     description = description,
-                    location = location,
+                    lastSeenLocation = lastSeenLocation,
                     photoUrl = photoUrl,
                     status = status,
                     userId = userId
                 )
 
-                animalRepository.addAnimal(animal)
+                personRepository.addPerson(person)
                 onComplete(true)
             } catch (e: Exception) {
                 e.printStackTrace()

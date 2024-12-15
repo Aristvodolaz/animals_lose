@@ -1,4 +1,4 @@
-package com.application.lose_animals.ui.screens
+package com.application.lose_animals.ui.screens.animals
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.lose_animals.data.model.Animal
-import com.application.lose_animals.ui.viewModel.AnimalDetailViewModel
+import com.application.lose_animals.ui.viewModel.animals.AnimalDetailViewModel
 
 @Composable
 fun AnimalDetailScreen(animalId: String, viewModel: AnimalDetailViewModel = hiltViewModel()) {

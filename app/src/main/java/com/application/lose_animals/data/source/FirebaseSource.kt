@@ -1,6 +1,6 @@
 package com.application.lose_animals.data.source
 
-import com.application.lose_animals.data.model.Animal
+import com.application.lose_animals.data.model.Person
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,39 +9,34 @@ import javax.inject.Inject
 
 class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestore) {
 
-    // Get all animals from Firestore and wrap in a Flow
-    fun getAnimals(): Flow<List<Animal>> = flow {
+    fun getPersons(): Flow<List<Person>> = flow {
         try {
-            val snapshot = firestore.collection("animals").get().await() // Fetch all animals from the "animals" collection
-            val animals = snapshot.toObjects(Animal::class.java)  // Deserialize the Firestore documents into Animal objects
-            emit(animals)  // Emit the list of animals as a flow
+            val snapshot = firestore.collection("persons").get().await() // Fetch all persons from the "persons" collection
+            val persons = snapshot.toObjects(Person::class.java)
+            emit(persons)
         } catch (e: Exception) {
-            emit(emptyList())  // In case of an error, emit an empty list
+            emit(emptyList())
         }
     }
 
-    // Add a new animal document to Firestore
-    suspend fun addAnimal(animal: Animal) {
-        firestore.collection("animals").add(animal).await() // Add a new animal to the collection
+    suspend fun addPerson(person: Person) {
+        firestore.collection("persons").add(person).await()
     }
 
-    // Update an existing animal document in Firestore
-    suspend fun updateAnimal(animal: Animal) {
-        val animalDocRef = firestore.collection("animals").document(animal.id) // Reference to a specific animal document
-        animalDocRef.set(animal).await()  // Update the animal data
+    suspend fun updatePerson(person: Person) {
+        val personDocRef = firestore.collection("persons").document(person.id) // Reference to a specific person document
+        personDocRef.set(person).await()  // Update the person data
     }
 
-    // Delete an animal document from Firestore by its ID
-    suspend fun deleteAnimal(animalId: String) {
-        val animalDocRef = firestore.collection("animals").document(animalId) // Reference to the animal document by ID
-        animalDocRef.delete().await()  // Delete the document from Firestore
+    suspend fun deletePerson(personId: String) {
+        val personDocRef = firestore.collection("persons").document(personId) // Reference to the person document by ID
+        personDocRef.delete().await()  // Delete the document from Firestore
     }
 
-    // Get a specific animal by its ID
-    suspend fun getAnimalById(animalId: String): Animal? {
+    suspend fun getPersonById(personId: String): Person? {
         return try {
-            val snapshot = firestore.collection("animals").document(animalId).get().await() // Fetch the animal document by ID
-            snapshot.toObject(Animal::class.java)  // Deserialize the document into an Animal object
+            val snapshot = firestore.collection("persons").document(personId).get().await() // Fetch the person document by ID
+            snapshot.toObject(Person::class.java)  // Deserialize the document into a Person object
         } catch (e: Exception) {
             null // Return null if an error occurs (e.g., document not found)
         }

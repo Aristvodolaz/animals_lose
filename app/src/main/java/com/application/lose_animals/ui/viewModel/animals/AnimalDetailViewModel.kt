@@ -1,4 +1,4 @@
-package com.application.lose_animals.ui.viewModel
+package com.application.lose_animals.ui.viewModel.animals
 
 import androidx.lifecycle.ViewModel
 import com.application.lose_animals.data.model.Animal

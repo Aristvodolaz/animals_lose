@@ -1,4 +1,4 @@
-package com.application.lose_animals.ui.screens
+package com.application.lose_animals.ui.screens.animals
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.lose_animals.data.model.Animal
-import com.application.lose_animals.ui.viewModel.EditAnimalViewModel
+import com.application.lose_animals.ui.viewModel.animals.EditAnimalViewModel
 
 @Composable
 fun EditAnimalScreen(

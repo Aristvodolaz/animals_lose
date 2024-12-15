@@ -20,22 +20,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.application.lose_animals.ui.components.CustomTextField
 import com.application.lose_animals.ui.components.DropdownMenuField
-import com.application.lose_animals.ui.viewModel.AddAnimalViewModel
+import com.application.lose_animals.ui.viewModel.AddPersonViewModel
 
 @Composable
-fun AddAnimalScreen(
-    viewModel: AddAnimalViewModel = hiltViewModel(),
-    onAnimalAdded: () -> Unit
+fun AddPersonScreen(
+    viewModel: AddPersonViewModel = hiltViewModel(),
+    onPersonAdded: () -> Unit
 ) {
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
+    var lastSeenLocation by remember { mutableStateOf("") }
     var photoUrl by remember { mutableStateOf("") }
-    var status by remember { mutableStateOf("Lost") }
+    var status by remember { mutableStateOf("Missing") }
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var isLoading by remember { mutableStateOf(false) }
 
-    // Launcher for selecting image
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             selectedImageUri = uri
@@ -43,7 +42,6 @@ fun AddAnimalScreen(
         }
     }
 
-    // Scrollable column
     val scrollState = rememberScrollState()
 
     Column(
@@ -51,25 +49,23 @@ fun AddAnimalScreen(
             .fillMaxSize()
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(scrollState), // Makes the layout scrollable
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Add a Lost/Found Animal",
+            text = "Add Missing Person",
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Name Input
         CustomTextField(
             value = name,
             onValueChange = { name = it },
-            label = "Animal Name"
+            label = "Full Name"
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Description Input
         CustomTextField(
             value = description,
             onValueChange = { description = it },
@@ -77,15 +73,13 @@ fun AddAnimalScreen(
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Location Input
         CustomTextField(
-            value = location,
-            onValueChange = { location = it },
-            label = "Location"
+            value = lastSeenLocation,
+            onValueChange = { lastSeenLocation = it },
+            label = "Last Seen Location"
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Image Preview
         if (selectedImageUri != null) {
             Image(
                 painter = rememberImagePainter(selectedImageUri),
@@ -94,12 +88,9 @@ fun AddAnimalScreen(
                     .fillMaxWidth()
                     .height(200.dp)
                     .padding(bottom = 8.dp)
-                    .clickable {
-                        // Add functionality to remove or change image
-                    }
+                    .clickable {}
             )
         } else {
-            // Placeholder when no image is selected
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -116,26 +107,22 @@ fun AddAnimalScreen(
             }
         }
 
-        // Select Image Button
-
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Status Dropdown Menu
         DropdownMenuField(
             label = "Status",
             selectedItem = status,
             onItemSelected = { status = it },
-            options = listOf("Lost", "Found")
+            options = listOf("Missing", "Found")
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Add Animal Button
         Button(
             onClick = {
                 isLoading = true
-                viewModel.addAnimal(name, description, location, photoUrl.ifEmpty { null }, status) { success ->
+                viewModel.addPerson(name, description, lastSeenLocation, photoUrl.ifEmpty { null }, status) { success ->
                     if (success) {
-                        onAnimalAdded()
+                        onPersonAdded()
                     }
                     isLoading = false
                 }
@@ -151,7 +138,7 @@ fun AddAnimalScreen(
                     modifier = Modifier.size(24.dp)
                 )
             } else {
-                Text("Add Animal", color = Color.White)
+                Text("Add Person", color = Color.White)
             }
         }
     }
