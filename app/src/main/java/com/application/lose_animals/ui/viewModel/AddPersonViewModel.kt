@@ -36,17 +36,21 @@ class AddPersonViewModel @Inject constructor(
                 val userId = authRepository.getCurrentUser()?.id ?: return@launch
                 val photoUrl = photoUri?.let { uploadImageToFirebase(it.toUri()) }
 
-                val person = Person(
-                    id = "",
-                    name = name,
-                    description = description,
-                    lastSeenLocation = lastSeenLocation,
-                    photoUrl = photoUrl,
-                    status = status,
-                    userId = userId
-                )
+                val person = photoUrl?.let {
+                    Person(
+                        id = "",
+                        name = name,
+                        description = description,
+                        lastSeenLocation = lastSeenLocation,
+                        photoUrl = it,
+                        status = status,
+                        userId = userId
+                    )
+                }
 
-                personRepository.addPerson(person)
+                if (person != null) {
+                    personRepository.addPerson(person)
+                }
                 onComplete(true)
             } catch (e: Exception) {
                 e.printStackTrace()

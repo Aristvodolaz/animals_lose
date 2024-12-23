@@ -11,17 +11,22 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
 
     fun getPersons(): Flow<List<Person>> = flow {
         try {
-            val snapshot = firestore.collection("persons").get().await() // Fetch all persons from the "persons" collection
+            val snapshot = firestore.collection("persons").get().await()
             val persons = snapshot.toObjects(Person::class.java)
             emit(persons)
         } catch (e: Exception) {
+            e.printStackTrace() // Логирование ошибки
             emit(emptyList())
         }
     }
 
+
     suspend fun addPerson(person: Person) {
-        firestore.collection("persons").add(person).await()
+        val docRef = firestore.collection("persons").add(person).await()
+        val updatedPerson = person.copy(id = docRef.id)
+        docRef.set(updatedPerson).await() // Обновляем объект с заполненным `id`
     }
+
 
     suspend fun updatePerson(person: Person) {
         val personDocRef = firestore.collection("persons").document(person.id) // Reference to a specific person document
