@@ -1,6 +1,5 @@
 package com.application.lose_animals.ui.screens
 
-
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,7 +25,7 @@ fun PersonListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Missing Persons", style = MaterialTheme.typography.titleLarge) },
+                title = { Text("Пропавшие люди", style = MaterialTheme.typography.titleLarge) },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 )

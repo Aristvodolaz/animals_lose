@@ -1,16 +1,12 @@
 package com.application.lose_animals.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.lose_animals.ui.components.CustomTextField
@@ -44,7 +40,7 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Create Your Account",
+                text = "Создайте учетную запись",
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -54,14 +50,14 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
             CustomTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = "Email"
+                label = "Электронная почта"
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             CustomTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = "Password",
+                label = "Пароль",
                 isPassword = true // Передаем true для поля пароля
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -69,7 +65,7 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
             CustomTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = "Username"
+                label = "Имя пользователя"
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -78,7 +74,7 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
                 onClick = { viewModel.register(email, password, username) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Register")
+                Text("Зарегистрироваться")
             }
 
             when (authState) {
@@ -87,7 +83,7 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
                 }
                 is AuthState.Error -> {
                     val message = (authState as AuthState.Error).message
-                    Text(text = "Error: $message", color = Color.Red)
+                    Text(text = "Ошибка: $message", color = Color.Red)
                 }
                 else -> {}
             }
@@ -95,7 +91,7 @@ fun RegisterScreen(viewModel: AuthViewModel = hiltViewModel(), onRegistrationSuc
             Spacer(modifier = Modifier.height(16.dp))
 
             TextButton(onClick = { onNavigateToLogin() }) {
-                Text("Already have an account? Login")
+                Text("Уже есть учетная запись? Войти")
             }
         }
         SnackbarHost(hostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))

@@ -8,9 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.ui.viewModel.PersonDetailViewModel
@@ -24,7 +22,7 @@ fun PersonDetailScreen(
     var person by remember { mutableStateOf<Person?>(null) }
     var isLoading by remember { mutableStateOf(true) }
 
-    // Fetch person details
+    // Загрузка информации о человеке
     LaunchedEffect(personId) {
         person = viewModel.getPersonById(personId)
         isLoading = false
@@ -33,7 +31,7 @@ fun PersonDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Person Details", style = MaterialTheme.typography.titleLarge) },
+                title = { Text("Детали о человеке", style = MaterialTheme.typography.titleLarge) },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
@@ -56,10 +54,10 @@ fun PersonDetailScreen(
                                 .padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            // Display photo
+                            // Фото человека
                             SubcomposeAsyncImage(
                                 model = personData.photoUrl,
-                                contentDescription = "Person Photo",
+                                contentDescription = "Фото человека",
                                 modifier = Modifier
                                     .size(200.dp)
                                     .padding(16.dp),
@@ -73,7 +71,7 @@ fun PersonDetailScreen(
                                 },
                                 error = {
                                     Text(
-                                        text = "Image not available",
+                                        text = "Изображение недоступно",
                                         textAlign = TextAlign.Center,
                                         style = MaterialTheme.typography.bodyMedium,
                                         modifier = Modifier.padding(16.dp)
@@ -83,33 +81,32 @@ fun PersonDetailScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            // Display person details
+                            // Информация о человеке
                             Text(
-                                text = "Name: ${personData.name}",
+                                text = "Имя: ${personData.name}",
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                             Text(
-                                text = "Description: ${personData.description}",
+                                text = "Описание: ${personData.description}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                             Text(
-                                text = "Last Seen Location: ${personData.lastSeenLocation}",
+                                text = "Последнее местонахождение: ${personData.lastSeenLocation}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
 
-                            // Add additional details as needed
                             Text(
-                                text = "Status: ${personData.status}",
+                                text = "Статус: ${personData.status}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
                     } ?: run {
                         Text(
-                            text = "Person not found",
+                            text = "Человек не найден",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(16.dp)

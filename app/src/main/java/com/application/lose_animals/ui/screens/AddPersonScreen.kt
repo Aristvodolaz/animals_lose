@@ -1,5 +1,6 @@
 package com.application.lose_animals.ui.screens
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import com.application.lose_animals.ui.components.CustomTextField
 import com.application.lose_animals.ui.components.DropdownMenuField
 import com.application.lose_animals.ui.viewModel.AddPersonViewModel
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun AddPersonScreen(
     viewModel: AddPersonViewModel = hiltViewModel(),
@@ -34,6 +36,13 @@ fun AddPersonScreen(
     var status by remember { mutableStateOf("Missing") }
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var isLoading by remember { mutableStateOf(false) }
+
+    val isFormValid by derivedStateOf {
+        name.isNotBlank() &&
+                description.isNotBlank() &&
+                lastSeenLocation.isNotBlank() &&
+                selectedImageUri != null
+    }
 
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
@@ -128,8 +137,9 @@ fun AddPersonScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
+            enabled = isFormValid,
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = if (isFormValid) MaterialTheme.colorScheme.primary else Color.Gray
             )
         ) {
             if (isLoading) {
@@ -140,6 +150,14 @@ fun AddPersonScreen(
             } else {
                 Text("Add Person", color = Color.White)
             }
+        }
+
+        if (!isFormValid) {
+            Text(
+                text = "Please fill out all fields and select an image.",
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }

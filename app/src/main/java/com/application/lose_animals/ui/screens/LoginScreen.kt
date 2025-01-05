@@ -45,7 +45,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Welcome Back",
+                text = "Добро пожаловать",
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 32.dp)
@@ -54,14 +54,14 @@ fun LoginScreen(
             CustomTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = "Email"
+                label = "Электронная почта"
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             CustomTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = "Password",
+                label = "Пароль",
                 isPassword = true
             )
 
@@ -80,7 +80,7 @@ fun LoginScreen(
                 if (isLoading) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text("Login", color = Color.White)
+                    Text("Войти", color = Color.White)
                 }
             }
 
@@ -90,20 +90,19 @@ fun LoginScreen(
                         delay(1000)
                         onLoginSuccess()
                     }
-                    Text("Login successful!", color = Color.Green, modifier = Modifier.padding(top = 16.dp))
+                    Text("Вход выполнен успешно!", color = Color.Green, modifier = Modifier.padding(top = 16.dp))
                 }
                 is AuthState.Error -> {
                     val message = (authState as AuthState.Error).message
-                    Text(text = "Error: $message", color = Color.Red, modifier = Modifier.padding(top = 16.dp))
+                    Text(text = "Ошибка: $message", color = Color.Red, modifier = Modifier.padding(top = 16.dp))
                 }
                 else -> {}
             }
 
             Spacer(modifier = Modifier.height(24.dp))
             TextButton(onClick = { onNavigateToRegister() }) {
-                Text("Don't have an account? Sign Up", color = MaterialTheme.colorScheme.primary)
+                Text("Нет аккаунта? Зарегистрироваться", color = MaterialTheme.colorScheme.primary)
             }
         }
     }
 }
-
