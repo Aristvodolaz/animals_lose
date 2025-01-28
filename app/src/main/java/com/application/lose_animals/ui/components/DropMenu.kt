@@ -53,7 +53,11 @@ fun DropdownMenuField(
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color.Black,
                 disabledTextColor = Color.Black,
-                disabledLabelColor = Color.Black
+                disabledLabelColor = Color.Black,
+                focusedTextColor =   Color.Black,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor =  Color.Transparent,
+                unfocusedTextColor = Color.Black
             )
         )
 

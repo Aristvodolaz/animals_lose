@@ -15,7 +15,6 @@ import androidx.compose.material3.*
 import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.ui.components.BottomNavigationBar
 
-
 @Composable
 fun LostAnimalsApp() {
     val navController = rememberNavController()
@@ -23,7 +22,15 @@ fun LostAnimalsApp() {
     val isAuthenticated by viewModel.isAuthenticated.collectAsState()
     var currentDestination by remember { mutableStateOf("login") }
 
-    // Wrap Scaffold with BottomBar to show BottomNavigation only if authenticated
+    // Следим за изменением состояния авторизации
+    LaunchedEffect(isAuthenticated) {
+        if (isAuthenticated) {
+            navController.navigate("profile") {
+                popUpTo("login") { inclusive = true }
+            }
+        }
+    }
+
     Scaffold(
         bottomBar = {
             if (isAuthenticated) {
@@ -43,10 +50,12 @@ fun LostAnimalsApp() {
         ) {
             composable("profile") {
                 currentDestination = "profile"
-                ProfileScreen(navController = navController, onLogout = {
+                ProfileScreen(onLogout = {
                     navController.navigate("login") {
                         popUpTo("profile") { inclusive = true }
                     }
+                }, onEditPerson = { person ->
+                    navController.navigate("editPerson/${person.id}")
                 })
             }
             composable("addPerson") {
@@ -59,9 +68,7 @@ fun LostAnimalsApp() {
                 currentDestination = "login"
                 LoginScreen(
                     onLoginSuccess = {
-                        navController.navigate("profile") {
-                            popUpTo("login") { inclusive = true }
-                        }
+                        viewModel.isAuthenticated // Обновляем состояние isAuthenticated = true
                     },
                     onNavigateToRegister = {
                         navController.navigate("register")
