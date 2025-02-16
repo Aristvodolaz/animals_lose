@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import android.util.Log
 
 class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestore) {
 
@@ -15,35 +16,55 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
             val persons = snapshot.toObjects(Person::class.java)
             emit(persons)
         } catch (e: Exception) {
-            e.printStackTrace() // Логирование ошибки
+            Log.e("FirebaseSource", "Ошибка загрузки данных: ${e.localizedMessage}")
             emit(emptyList())
         }
     }
 
-
     suspend fun addPerson(person: Person) {
-        val docRef = firestore.collection("persons").add(person).await()
-        val updatedPerson = person.copy(id = docRef.id)
-        docRef.set(updatedPerson).await() // Обновляем объект с заполненным `id`
+        try {
+            val docRef = firestore.collection("persons").add(person).await()
+            val updatedPerson = person.copy(id = docRef.id)
+            docRef.set(updatedPerson).await()
+            Log.d("FirebaseSource", "Человек добавлен: ${updatedPerson.id}")
+        } catch (e: Exception) {
+            Log.e("FirebaseSource", "Ошибка добавления: ${e.localizedMessage}")
+        }
     }
 
+    suspend fun updatePerson(person: Person, updatedBy: String) {
+        try {
+            val personDocRef = firestore.collection("persons").document(person.id)
 
-    suspend fun updatePerson(person: Person) {
-        val personDocRef = firestore.collection("persons").document(person.id) // Reference to a specific person document
-        personDocRef.set(person).await()  // Update the person data
+            // Добавляем таймстемп и имя обновившего пользователя
+            val updatedPerson = person.copy(
+                lastUpdated = System.currentTimeMillis(),
+                updatedBy = updatedBy
+            )
+
+            personDocRef.set(updatedPerson).await()
+            Log.d("FirebaseSource", "Человек обновлен: ${updatedPerson.id}")
+        } catch (e: Exception) {
+            Log.e("FirebaseSource", "Ошибка обновления: ${e.localizedMessage}")
+        }
     }
 
     suspend fun deletePerson(personId: String) {
-        val personDocRef = firestore.collection("persons").document(personId) // Reference to the person document by ID
-        personDocRef.delete().await()  // Delete the document from Firestore
+        try {
+            firestore.collection("persons").document(personId).delete().await()
+            Log.d("FirebaseSource", "Человек удален: $personId")
+        } catch (e: Exception) {
+            Log.e("FirebaseSource", "Ошибка удаления: ${e.localizedMessage}")
+        }
     }
 
     suspend fun getPersonById(personId: String): Person? {
         return try {
-            val snapshot = firestore.collection("persons").document(personId).get().await() // Fetch the person document by ID
-            snapshot.toObject(Person::class.java)  // Deserialize the document into a Person object
+            val snapshot = firestore.collection("persons").document(personId).get().await()
+            snapshot.toObject(Person::class.java)
         } catch (e: Exception) {
-            null // Return null if an error occurs (e.g., document not found)
+            Log.e("FirebaseSource", "Ошибка получения данных: ${e.localizedMessage}")
+            null
         }
     }
 }

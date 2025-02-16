@@ -1,8 +1,7 @@
 package com.application.lose_animals
 
-
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,9 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.application.lose_animals.ui.screens.*
 import com.application.lose_animals.ui.viewModel.MainViewModel
-import androidx.compose.material3.*
-import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.ui.components.BottomNavigationBar
+import com.application.lose_animals.data.model.Person
 
 @Composable
 fun LostAnimalsApp() {
@@ -38,7 +36,8 @@ fun LostAnimalsApp() {
                     currentDestination = currentDestination,
                     onNavigateToAddPerson = { navController.navigate("addPerson") },
                     onNavigateToProfile = { navController.navigate("profile") },
-                    onNavigateToPeople = { navController.navigate("people") }
+                    onNavigateToPeople = { navController.navigate("people") },
+                    onNavigateToChat = { navController.navigate("chat") } // Добавлен чат
                 )
             }
         }
@@ -68,7 +67,7 @@ fun LostAnimalsApp() {
                 currentDestination = "login"
                 LoginScreen(
                     onLoginSuccess = {
-                        viewModel.isAuthenticated // Обновляем состояние isAuthenticated = true
+                        viewModel.isAuthenticated
                     },
                     onNavigateToRegister = {
                         navController.navigate("register")
@@ -117,6 +116,10 @@ fun LostAnimalsApp() {
                         Text(text = "Loading person details...")
                     }
                 }
+            }
+            composable("chat") { // Добавленный экран чата
+                currentDestination = "chat"
+                ChatScreen()
             }
         }
     }
