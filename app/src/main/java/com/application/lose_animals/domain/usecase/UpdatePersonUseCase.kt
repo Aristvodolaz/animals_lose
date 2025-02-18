@@ -7,7 +7,7 @@ import javax.inject.Inject
 class UpdatePersonUseCase @Inject constructor(
     private val repository: PersonRepository
 ) {
-    suspend operator fun invoke(person: Person) {
-        repository.updatePerson(person)
+    suspend operator fun invoke(person: Person, updatedBy: String) {
+        repository.updatePerson(person, updatedBy) // Передаем updatedBy
     }
 }

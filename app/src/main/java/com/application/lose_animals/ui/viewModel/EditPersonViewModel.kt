@@ -13,10 +13,10 @@ class EditPersonViewModel @Inject constructor(
     private val updatePersonUseCase: UpdatePersonUseCase
 ) : ViewModel() {
 
-    fun updatePerson(person: Person, onComplete: (Boolean) -> Unit) {
+    fun updatePerson(person: Person, updatedBy: String, onComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
-                updatePersonUseCase(person)
+                updatePersonUseCase(person, updatedBy) // Передаем updatedBy
                 onComplete(true)
             } catch (e: Exception) {
                 onComplete(false)

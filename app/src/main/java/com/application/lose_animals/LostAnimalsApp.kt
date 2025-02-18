@@ -20,14 +20,16 @@ fun LostAnimalsApp() {
     val isAuthenticated by viewModel.isAuthenticated.collectAsState()
     var currentDestination by remember { mutableStateOf("login") }
 
-    // Следим за изменением состояния авторизации
     LaunchedEffect(isAuthenticated) {
+        println("Auth state changed: $isAuthenticated")
         if (isAuthenticated) {
             navController.navigate("profile") {
                 popUpTo("login") { inclusive = true }
             }
         }
     }
+
+
 
     Scaffold(
         bottomBar = {

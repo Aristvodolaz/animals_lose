@@ -17,6 +17,7 @@ import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.ui.components.CustomTextField
 import com.application.lose_animals.ui.components.DropdownMenuField
 import com.application.lose_animals.ui.viewModel.EditPersonViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -116,23 +117,20 @@ fun EditPersonScreen(
                         status = status,
                         photoUrl = photoUrl
                     )
-                    viewModel.updatePerson(updatedPerson) { success ->
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "unknown_user"
+
+                    viewModel.updatePerson(updatedPerson, userId) { success ->
                         if (success) {
                             onPersonUpdated()
                         }
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                enabled = isFormValid,
-                shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isFormValid) MaterialTheme.colorScheme.primary else Color.Gray
-                )
+                modifier = Modifier.fillMaxWidth(),
+                enabled = isFormValid
             ) {
-                Text("Обновить информацию", color = Color.White)
+                Text("Обновить информацию")
             }
+
 
             if (!isFormValid) {
                 Text(

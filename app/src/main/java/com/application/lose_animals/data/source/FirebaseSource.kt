@@ -36,7 +36,6 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
         try {
             val personDocRef = firestore.collection("persons").document(person.id)
 
-            // Добавляем таймстемп и имя обновившего пользователя
             val updatedPerson = person.copy(
                 lastUpdated = System.currentTimeMillis(),
                 updatedBy = updatedBy
@@ -48,6 +47,7 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
             Log.e("FirebaseSource", "Ошибка обновления: ${e.localizedMessage}")
         }
     }
+
 
     suspend fun deletePerson(personId: String) {
         try {
