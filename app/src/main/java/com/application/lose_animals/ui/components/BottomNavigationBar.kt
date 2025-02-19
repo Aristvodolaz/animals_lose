@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -15,12 +16,10 @@ fun BottomNavigationBar(
     onNavigateToProfile: () -> Unit,
     onNavigateToAddPerson: () -> Unit,
     onNavigateToPeople: () -> Unit,
-    onNavigateToChat: () -> Unit
+    onNavigateToChat: () -> Unit,
+    onSosClick: () -> Unit
 ) {
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = Color.White
-    ) {
+    NavigationBar {
         NavigationBarItem(
             icon = { Icon(Icons.Filled.People, contentDescription = "People") },
             label = { Text("People") },
@@ -28,8 +27,14 @@ fun BottomNavigationBar(
             onClick = onNavigateToPeople
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Add, contentDescription = "Add Person") },
-            label = { Text("Add Person") },
+            icon = { Icon(Icons.Filled.Person, contentDescription = "Profile") },
+            label = { Text("Profile") },
+            selected = currentDestination == "profile",
+            onClick = onNavigateToProfile
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Filled.Add, contentDescription = "Add") },
+            label = { Text("Add") },
             selected = currentDestination == "addPerson",
             onClick = onNavigateToAddPerson
         )
@@ -40,10 +45,10 @@ fun BottomNavigationBar(
             onClick = onNavigateToChat
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Person, contentDescription = "Profile") },
-            label = { Text("Profile") },
-            selected = currentDestination == "profile",
-            onClick = onNavigateToProfile
+            icon = { Icon(Icons.Filled.Warning, contentDescription = "SOS", tint = Color.Red) },
+            label = { Text("SOS", color = Color.Red) },
+            selected = false,
+            onClick = onSosClick
         )
     }
 }

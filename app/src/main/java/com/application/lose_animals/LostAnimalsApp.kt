@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +13,7 @@ import com.application.lose_animals.ui.screens.*
 import com.application.lose_animals.ui.viewModel.MainViewModel
 import com.application.lose_animals.ui.components.BottomNavigationBar
 import com.application.lose_animals.data.model.Person
+import com.application.lose_animals.ui.components.SosButton
 
 @Composable
 fun LostAnimalsApp() {
@@ -39,7 +41,9 @@ fun LostAnimalsApp() {
                     onNavigateToAddPerson = { navController.navigate("addPerson") },
                     onNavigateToProfile = { navController.navigate("profile") },
                     onNavigateToPeople = { navController.navigate("people") },
-                    onNavigateToChat = { navController.navigate("chat") } // Добавлен чат
+                    onNavigateToChat = { navController.navigate("chat") } ,
+                    onSosClick = { navController.navigate("sos") } // Переход на SOS
+
                 )
             }
         }
@@ -49,6 +53,7 @@ fun LostAnimalsApp() {
             startDestination = if (isAuthenticated) "profile" else "login",
             Modifier.padding(innerPadding)
         ) {
+
             composable("profile") {
                 currentDestination = "profile"
                 ProfileScreen(onLogout = {
@@ -92,6 +97,10 @@ fun LostAnimalsApp() {
             composable("people") {
                 currentDestination = "people"
                 PersonListScreen(navController)
+            }
+
+            composable("sos") {
+                SosButton(context = LocalContext.current, userId = "123", userName = "User")
             }
             composable("personDetail/{personId}") { backStackEntry ->
                 currentDestination = "personDetail"

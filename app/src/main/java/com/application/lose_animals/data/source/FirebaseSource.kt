@@ -1,6 +1,7 @@
 package com.application.lose_animals.data.source
 
 import com.application.lose_animals.data.model.Person
+import com.application.lose_animals.data.model.SosMessage
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,6 +11,7 @@ import android.util.Log
 
 class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestore) {
 
+    // Получение всех объявлений о пропавших людях
     fun getPersons(): Flow<List<Person>> = flow {
         try {
             val snapshot = firestore.collection("persons").get().await()
@@ -21,6 +23,7 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
         }
     }
 
+    // Добавление нового человека в базу данных
     suspend fun addPerson(person: Person) {
         try {
             val docRef = firestore.collection("persons").add(person).await()
@@ -32,6 +35,7 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
         }
     }
 
+    // Обновление данных о человеке
     suspend fun updatePerson(person: Person, updatedBy: String) {
         try {
             val personDocRef = firestore.collection("persons").document(person.id)
@@ -48,7 +52,7 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
         }
     }
 
-
+    // Удаление человека из базы
     suspend fun deletePerson(personId: String) {
         try {
             firestore.collection("persons").document(personId).delete().await()
@@ -58,6 +62,7 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
         }
     }
 
+    // Получение конкретного человека по ID
     suspend fun getPersonById(personId: String): Person? {
         return try {
             val snapshot = firestore.collection("persons").document(personId).get().await()
@@ -65,6 +70,32 @@ class FirebaseSource @Inject constructor(private val firestore: FirebaseFirestor
         } catch (e: Exception) {
             Log.e("FirebaseSource", "Ошибка получения данных: ${e.localizedMessage}")
             null
+        }
+    }
+
+    // --- Добавляем поддержку SOS-сообщений ---
+
+    // Отправка SOS-сообщения в базу данных
+    suspend fun sendSosMessage(sosMessage: SosMessage) {
+        try {
+            val docRef = firestore.collection("sos_alerts").add(sosMessage).await()
+            val updatedSosMessage = sosMessage.copy(id = docRef.id)
+            docRef.set(updatedSosMessage).await()
+            Log.d("FirebaseSource", "SOS сообщение отправлено: ${updatedSosMessage.id}")
+        } catch (e: Exception) {
+            Log.e("FirebaseSource", "Ошибка отправки SOS: ${e.localizedMessage}")
+        }
+    }
+
+    // Получение всех SOS-сообщений
+    fun getSosMessages(): Flow<List<SosMessage>> = flow {
+        try {
+            val snapshot = firestore.collection("sos_alerts").get().await()
+            val sosMessages = snapshot.toObjects(SosMessage::class.java)
+            emit(sosMessages)
+        } catch (e: Exception) {
+            Log.e("FirebaseSource", "Ошибка загрузки SOS сообщений: ${e.localizedMessage}")
+            emit(emptyList())
         }
     }
 }
