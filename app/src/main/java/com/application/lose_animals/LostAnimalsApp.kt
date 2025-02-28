@@ -41,9 +41,10 @@ fun LostAnimalsApp() {
                     onNavigateToAddPerson = { navController.navigate("addPerson") },
                     onNavigateToProfile = { navController.navigate("profile") },
                     onNavigateToPeople = { navController.navigate("people") },
-                    onNavigateToChat = { navController.navigate("chat") } ,
-                    onSosClick = { navController.navigate("sos") } // Переход на SOS
-
+                    onNavigateToChat = { navController.navigate("chat") },
+                    onNavigateToMap = { navController.navigate("map") },
+                    onNavigateToRecognition = { navController.navigate("recognition") },
+                    onSosClick = { navController.navigate("sos") }
                 )
             }
         }
@@ -62,6 +63,8 @@ fun LostAnimalsApp() {
                     }
                 }, onEditPerson = { person ->
                     navController.navigate("editPerson/${person.id}")
+                }, onNavigateToNotificationSettings = {
+                    navController.navigate("notificationSettings")
                 })
             }
             composable("addPerson") {
@@ -131,6 +134,45 @@ fun LostAnimalsApp() {
             composable("chat") { // Добавленный экран чата
                 currentDestination = "chat"
                 ChatScreen()
+            }
+            
+            // Добавляем экран настроек уведомлений
+            composable("notificationSettings") {
+                currentDestination = "notificationSettings"
+                NotificationSettingsScreen(
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+            
+            // Добавляем экран карты
+            composable("map") {
+                currentDestination = "map"
+                MapScreen(
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    },
+                    onPersonClick = { personId ->
+                        navController.navigate("personDetail/$personId")
+                    },
+                    onNavigateToAddPerson = {
+                        navController.navigate("addPerson")
+                    }
+                )
+            }
+            
+            // Добавляем экран распознавания
+            composable("recognition") {
+                currentDestination = "recognition"
+                RecognitionScreen(
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    },
+                    onPersonClick = { personId ->
+                        navController.navigate("personDetail/$personId")
+                    }
+                )
             }
         }
     }

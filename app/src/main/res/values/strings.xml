@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">lose_animals</string>
+    <string name="app_name">lose_people</string>
+    <!-- Notification Strings -->
+    <string name="notification_channel_name">Уведомления о пропавших людях поблизости</string>
+    <string name="notification_channel_description">Уведомления о пропавших и найденных людях рядом с вами</string>
+    <string name="notification_service_running">Сервис уведомлений о пропавших людях активен</string>
 </resources>

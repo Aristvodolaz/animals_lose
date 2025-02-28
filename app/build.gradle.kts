@@ -141,4 +141,28 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1")
 
     implementation ("androidx.compose.material:material:1.7.5")
+
+    // Material Design 3
+    implementation("com.google.android.material:material:1.11.0")
+    
+    // Constraint Layout
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    
+    // Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    
+    // Lifecycle components
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    
+    // Coil for image loading
+    implementation("io.coil-kt:coil:2.5.0")
+    
+    // Splash Screen API
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
