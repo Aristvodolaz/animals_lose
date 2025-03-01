@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -130,20 +131,21 @@ fun AddressAutocompleteField(
         }
         
         // Выпадающий список с предложениями адресов
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp)
-        ) {
-            DropdownMenu(
-                expanded = isFocused && suggestions.isNotEmpty(),
-                onDismissRequest = { focusManager.clearFocus() },
+        if (isFocused && suggestions.isNotEmpty()) {
+            // Используем Box с фиксированными размерами вместо DropdownMenu
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .heightIn(max = 200.dp)
+                    .clip(RoundedCornerShape(8.dp))
                     .background(MaterialTheme.colorScheme.surface)
+                    .padding(vertical = 8.dp)
             ) {
                 LazyColumn(
-                    modifier = Modifier.heightIn(max = 200.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 200.dp)
                 ) {
                     items(suggestions) { suggestion ->
                         AddressSuggestionItem(

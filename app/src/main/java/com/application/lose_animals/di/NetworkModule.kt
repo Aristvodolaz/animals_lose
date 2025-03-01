@@ -45,7 +45,7 @@ object NetworkModule {
     @Singleton
     fun provideDaDataApiService(okHttpClient: OkHttpClient, gson: Gson): DaDataApiService {
         return Retrofit.Builder()
-            .baseUrl("https://suggestions.dadata.ru/")
+            .baseUrl("https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
