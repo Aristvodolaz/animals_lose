@@ -174,11 +174,11 @@ git clone https://github.com/yourusername/findme-app.git
 
 Если у вас есть вопросы или предложения, свяжитесь с нами:
 
-- Email: contact@findme-app.com
-- Telegram: [@findme_support](https://t.me/findme_support)
+- Email: kap.moral22@gmail.com
+- Telegram: [@findme_support](https://t.me/corrywilliams)
 
 ---
 
 <p align="center">
-  Разработано с ❤️ командой FindMe
+  Разработано с ❤️ CorryWIlliams
 </p>
