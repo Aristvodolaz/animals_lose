@@ -20,13 +20,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Lose_animals"
+        android:theme="@style/Theme.AnimalsLose"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Lose_animals">
+            android:theme="@style/Theme.AnimalsLose.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,7 @@
 package com.application.lose_animals.ui.screens
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +33,8 @@ import com.application.lose_animals.R
 import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.data.model.User
 import com.application.lose_animals.ui.viewModel.ProfileViewModel
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +42,8 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onLogout: () -> Unit,
     onEditPerson: (Person) -> Unit,
-    onNavigateToNotificationSettings: () -> Unit = {}
+    onNavigateToNotificationSettings: () -> Unit = {},
+    onNavigateToChat: () -> Unit = {}
 ) {
     val user by viewModel.user.collectAsState()
     val userPersons by viewModel.userPersons.collectAsState()
@@ -54,21 +60,40 @@ fun ProfileScreen(
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 navigationIcon = {
                     IconButton(onClick = { /* Навигация назад если нужно */ }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack, 
+                            contentDescription = "Назад",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 },
                 actions = {
-                    IconButton(onClick = { onNavigateToNotificationSettings() }) {
-                        Icon(Icons.Outlined.Notifications, contentDescription = "Настройки уведомлений")
+                    IconButton(
+                        onClick = { onNavigateToNotificationSettings() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Notifications, 
+                            contentDescription = "Настройки уведомлений",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
-                    IconButton(onClick = { showLogoutDialog = true }) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Выйти")
+                    IconButton(
+                        onClick = { showLogoutDialog = true }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ExitToApp, 
+                            contentDescription = "Выйти",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
-                }
+                },
+                scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
             )
         }
     ) { paddingValues ->
@@ -80,7 +105,7 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                UserHeader(user = user)
+                UserHeader(user = user, userPersons = userPersons, onNavigateToChat = onNavigateToChat)
                 
                 Spacer(modifier = Modifier.height(24.dp))
                 
@@ -118,36 +143,59 @@ fun ProfileScreen(
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },
-            title = { Text("Выход из аккаунта") },
-            text = { Text("Вы уверены, что хотите выйти?") },
+            title = { 
+                Text(
+                    "Выход из аккаунта",
+                    style = MaterialTheme.typography.headlineSmall
+                ) 
+            },
+            text = { 
+                Text(
+                    "Вы уверены, что хотите выйти?",
+                    style = MaterialTheme.typography.bodyLarge
+                ) 
+            },
             confirmButton = {
                 Button(
                     onClick = {
                         showLogoutDialog = false
                         onLogout()
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
                     Text("Выйти")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }) {
+                OutlinedButton(
+                    onClick = { showLogoutDialog = false },
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+                ) {
                     Text("Отмена")
                 }
-            }
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+            shape = MaterialTheme.shapes.large
         )
     }
 }
 
 @Composable
-fun UserHeader(user: User?) {
+fun UserHeader(
+    user: User?, 
+    userPersons: List<Person>,
+    onNavigateToChat: () -> Unit = {}
+) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        shape = RoundedCornerShape(24.dp),
+        shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 4.dp
+        tonalElevation = 4.dp,
+        shadowElevation = 4.dp
     ) {
         Column(
             modifier = Modifier
@@ -159,7 +207,8 @@ fun UserHeader(user: User?) {
                     .size(120.dp)
                     .shadow(8.dp, CircleShape),
                 shape = CircleShape,
-                color = MaterialTheme.colorScheme.primaryContainer
+                color = MaterialTheme.colorScheme.primaryContainer,
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
@@ -190,20 +239,46 @@ fun UserHeader(user: User?) {
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+            
+            Button(
+                onClick = onNavigateToChat,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Chat,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Перейти в чат",
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StatisticItem(
-                    icon = Icons.Default.Pets,
-                    value = "${userPersons?.size ?: 0}",
-                    label = "Объявления"
+                    icon = Icons.Default.Person,
+                    value = "${userPersons.size}",
+                    label = "Объявления",
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
                 )
                 StatisticItem(
                     icon = Icons.Default.CheckCircle,
-                    value = "${userPersons?.count { it.status == "Найден" } ?: 0}",
-                    label = "Найдены"
+                    value = "${userPersons.count { it.status == "Найден" }}",
+                    label = "Найдены",
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
                 )
             }
         }
@@ -214,27 +289,36 @@ fun UserHeader(user: User?) {
 fun StatisticItem(
     icon: ImageVector,
     value: String,
-    label: String
+    label: String,
+    containerColor: Color = MaterialTheme.colorScheme.surface
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = containerColor,
+        modifier = Modifier.padding(4.dp)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(28.dp)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = value,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
 
@@ -248,11 +332,11 @@ fun PersonCardEnhanced(person: Person, onEditPerson: (Person) -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { expanded = !expanded }
             .animateContentSize(),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier
@@ -289,7 +373,7 @@ fun PersonCardEnhanced(person: Person, onEditPerson: (Person) -> Unit) {
                     }
                 }
                 
-                StatusChip(status = person.status)
+                ProfileStatusChip(status = person.status)
             }
 
             if (expanded) {
@@ -297,11 +381,20 @@ fun PersonCardEnhanced(person: Person, onEditPerson: (Person) -> Unit) {
                 Divider(color = MaterialTheme.colorScheme.outlineVariant)
                 Spacer(modifier = Modifier.height(16.dp))
                 
-                Text(
-                    text = person.description ?: "Описание отсутствует",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = MaterialTheme.shapes.small,
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f),
+                    tonalElevation = 0.dp
+                ) {
+                    Text(
+                        text = person.description ?: "Описание отсутствует",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
                 
                 Spacer(modifier = Modifier.height(16.dp))
                 
@@ -309,10 +402,23 @@ fun PersonCardEnhanced(person: Person, onEditPerson: (Person) -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = { onEditPerson(person) }) {
-                        Icon(Icons.Default.Edit, contentDescription = null)
+                    FilledTonalButton(
+                        onClick = { onEditPerson(person) },
+                        colors = ButtonDefaults.filledTonalButtonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    ) {
+                        Icon(
+                            Icons.Default.Edit, 
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Редактировать")
+                        Text(
+                            "Редактировать",
+                            style = MaterialTheme.typography.labelMedium
+                        )
                     }
                 }
             }
@@ -321,14 +427,15 @@ fun PersonCardEnhanced(person: Person, onEditPerson: (Person) -> Unit) {
 }
 
 @Composable
-fun StatusChip(status: String) {
+fun ProfileStatusChip(status: String) {
     val isFound = status == "Найден" || status == "Found"
     Surface(
         color = if (isFound) 
             MaterialTheme.colorScheme.primaryContainer 
         else 
             MaterialTheme.colorScheme.errorContainer,
-        shape = RoundedCornerShape(16.dp)
+        shape = MaterialTheme.shapes.extraSmall,
+        modifier = Modifier.padding(4.dp)
     ) {
         Text(
             text = status,

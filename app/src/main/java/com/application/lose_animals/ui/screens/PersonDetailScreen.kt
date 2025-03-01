@@ -111,7 +111,7 @@ fun PersonDetailScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         // Статус животного
-                        StatusChip(status = personData.status)
+                        PersonStatusChip(status = personData.status)
                         
                         Spacer(modifier = Modifier.height(16.dp))
                         
@@ -285,7 +285,7 @@ fun PersonDetailScreen(
 }
 
 @Composable
-fun StatusChip(status: String) {
+fun PersonStatusChip(status: String) {
     val (backgroundColor, contentColor) = when (status.lowercase()) {
         "пропавший" -> MaterialTheme.colorScheme.errorContainer to MaterialTheme.colorScheme.onErrorContainer
         "найден" -> MaterialTheme.colorScheme.tertiaryContainer to MaterialTheme.colorScheme.onTertiaryContainer

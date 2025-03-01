@@ -16,12 +16,14 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -62,6 +64,14 @@ fun ChatScreen(
     
     var isLoading by remember { mutableStateOf(true) }
     var showChatInfoDialog by remember { mutableStateOf(false) }
+    
+    // Данные о чате
+    data class ChatData(
+        val participants: List<String> = listOf("Администратор", "Волонтеры", "Пользователи"),
+        val createdAt: String = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
+    )
+    
+    val chatData = remember { ChatData() }
 
     LaunchedEffect(Unit) {
         database.addChildEventListener(object : ChildEventListener {
@@ -109,7 +119,7 @@ fun ChatScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Чат поиска животных",
+                        text = "Общий чат поиска людей",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.titleLarge
@@ -129,7 +139,7 @@ fun ChatScreen(
                         showChatInfoDialog = true
                     }) {
                         Icon(
-                            imageVector = Icons.Default.Info,
+                            imageVector = Icons.Outlined.Info,
                             contentDescription = "Информация о чате"
                         )
                     }
@@ -355,18 +365,16 @@ fun ChatBubble(message: ChatMessage, isCurrentUser: Boolean) {
 private fun Modifier.animateEnterExit(
     enter: androidx.compose.animation.EnterTransition,
     exit: androidx.compose.animation.ExitTransition = androidx.compose.animation.ExitTransition.None
-) = composed {
-    val visible = remember { mutableStateOf(false) }
+): Modifier = composed {
+    var visible by remember { mutableStateOf(false) }
     
     LaunchedEffect(Unit) {
-        visible.value = true
+        visible = true
     }
     
-    AnimatedVisibility(
-        visible = visible.value,
-        enter = enter,
-        exit = exit
-    ) {
-        this@animateEnterExit
+    if (visible) {
+        this
+    } else {
+        Modifier
     }
 }

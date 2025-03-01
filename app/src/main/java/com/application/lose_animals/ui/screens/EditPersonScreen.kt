@@ -7,6 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -94,7 +95,7 @@ fun EditPersonScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Редактирование животного",
+                        text = "Редактирование человека",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -131,8 +132,7 @@ fun EditPersonScreen(
                 },
                 text = { Text("Сохранить") },
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                enabled = isFormValid && !isUpdating
+                contentColor = MaterialTheme.colorScheme.onPrimary
             )
         }
     ) { paddingValues ->
@@ -169,7 +169,7 @@ fun EditPersonScreen(
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
-                            text = "Обновите информацию о животном",
+                            text = "Обновите информацию о человеке",
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
@@ -196,7 +196,7 @@ fun EditPersonScreen(
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
-                            label = { Text("Имя животного") },
+                            label = { Text("Имя человека") },
                             modifier = Modifier.fillMaxWidth(),
                             leadingIcon = { 
                                 Icon(
@@ -407,7 +407,7 @@ fun StatusOption(
         shape = RoundedCornerShape(8.dp),
         color = if (selected) color else MaterialTheme.colorScheme.surface,
         border = if (!selected) 
-            BorderStroke(1.dp, MaterialTheme.colorScheme.outline) 
+            BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
         else null
     ) {
         Box(

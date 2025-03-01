@@ -16,7 +16,6 @@ import androidx.core.app.NotificationCompat
 import com.application.lose_animals.MainActivity
 import com.application.lose_animals.R
 import com.application.lose_animals.data.model.Person
-import com.application.lose_animals.data.repository.PersonRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -36,9 +35,10 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import android.location.Geocoder
 import android.location.Address
+import com.application.lose_animals.domain.repository.PersonRepository
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.resume
 import java.util.Locale
+import kotlin.coroutines.resume
 
 @AndroidEntryPoint
 class NotificationService : Service() {

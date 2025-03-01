@@ -29,9 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.application.lose_animals.ui.viewModel.AddPersonViewModel
+import com.application.lose_animals.ui.components.AddressAutocompleteField
+import com.application.lose_animals.data.model.AddressSuggestion
 
 @SuppressLint("UnrememberedMutableState")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun AddPersonScreen(
     viewModel: AddPersonViewModel = hiltViewModel(),
@@ -46,6 +48,8 @@ fun AddPersonScreen(
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var showStatusMenu by remember { mutableStateOf(false) }
+    var selectedAddressSuggestion by remember { mutableStateOf<AddressSuggestion?>(null) }
+    var addressCoordinates by remember { mutableStateOf<Pair<Double, Double>?>(null) }
 
     val isFormValid by derivedStateOf {
         name.isNotBlank() &&
@@ -66,7 +70,7 @@ fun AddPersonScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Добавить животное") },
+                title = { Text("Добавить объявление") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Назад")
@@ -103,7 +107,7 @@ fun AddPersonScreen(
                     ) {
                         Image(
                             painter = rememberAsyncImagePainter(selectedImageUri),
-                            contentDescription = "Фото животного",
+                            contentDescription = "Фото",
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(CircleShape),
@@ -179,10 +183,10 @@ fun AddPersonScreen(
                     OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
-                        label = { Text("Кличка животного") },
+                        label = { Text("Имя человека") },
                         leadingIcon = {
                             Icon(
-                                Icons.Default.Pets,
+                                Icons.Default.Person,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -220,24 +224,19 @@ fun AddPersonScreen(
                     )
 
                     // Местоположение
-                    OutlinedTextField(
-                        value = lastSeenLocation,
-                        onValueChange = { lastSeenLocation = it },
-                        label = { Text("Последнее местоположение") },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Default.LocationOn,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                    AddressAutocompleteField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        label = "Последнее местоположение",
+                        onAddressSelected = { suggestion ->
+                            selectedAddressSuggestion = suggestion
+                            lastSeenLocation = suggestion.value
                         },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        singleLine = true
+                        onCoordinatesReceived = { coordinates ->
+                            addressCoordinates = coordinates
+                            // Здесь можно сохранить координаты в модель данных
+                        }
                     )
 
                     // Статус
@@ -373,7 +372,7 @@ fun AddPersonScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                "Добавить животное",
+                                "Добавить объявление",
                                 style = MaterialTheme.typography.titleMedium
                             )
                         }

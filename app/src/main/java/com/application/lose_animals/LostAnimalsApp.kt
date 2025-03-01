@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +15,7 @@ import com.application.lose_animals.ui.viewModel.MainViewModel
 import com.application.lose_animals.ui.components.BottomNavigationBar
 import com.application.lose_animals.data.model.Person
 import com.application.lose_animals.ui.components.SosButton
+import com.application.lose_animals.R
 
 @Composable
 fun LostAnimalsApp() {
@@ -23,7 +25,6 @@ fun LostAnimalsApp() {
     var currentDestination by remember { mutableStateOf("login") }
 
     LaunchedEffect(isAuthenticated) {
-        println("Auth state changed: $isAuthenticated")
         if (isAuthenticated) {
             navController.navigate("profile") {
                 popUpTo("login") { inclusive = true }
@@ -31,18 +32,15 @@ fun LostAnimalsApp() {
         }
     }
 
-
-
     Scaffold(
         bottomBar = {
-            if (isAuthenticated) {
+            if (isAuthenticated && currentDestination != "sos") {
                 BottomNavigationBar(
                     currentDestination = currentDestination,
                     onNavigateToAddPerson = { navController.navigate("addPerson") },
                     onNavigateToProfile = { navController.navigate("profile") },
                     onNavigateToPeople = { navController.navigate("people") },
                     onNavigateToChat = { navController.navigate("chat") },
-                    onNavigateToMap = { navController.navigate("map") },
                     onNavigateToRecognition = { navController.navigate("recognition") },
                     onSosClick = { navController.navigate("sos") }
                 )
@@ -65,6 +63,8 @@ fun LostAnimalsApp() {
                     navController.navigate("editPerson/${person.id}")
                 }, onNavigateToNotificationSettings = {
                     navController.navigate("notificationSettings")
+                }, onNavigateToChat = {
+                    navController.navigate("chat")
                 })
             }
             composable("addPerson") {
@@ -103,7 +103,13 @@ fun LostAnimalsApp() {
             }
 
             composable("sos") {
-                SosButton(context = LocalContext.current, userId = "123", userName = "User")
+                currentDestination = "sos"
+                SosButton(
+                    context = LocalContext.current,
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
             composable("personDetail/{personId}") { backStackEntry ->
                 currentDestination = "personDetail"
@@ -111,7 +117,7 @@ fun LostAnimalsApp() {
                 if (personId != null) {
                     PersonDetailScreen(personId = personId)
                 } else {
-                    Text(text = "Person not found")
+                    Text(text = "Информация о человеке не найдена")
                 }
             }
             composable("editPerson/{personId}") { backStackEntry ->
@@ -123,20 +129,20 @@ fun LostAnimalsApp() {
                         person = viewModel.getPersonById(personId)
                     }
                     person?.let { person ->
-                        EditPersonScreen(person = person) {
+                        EditPersonScreen(person = person, onPersonUpdated = {
                             navController.navigate("profile")
-                        }
+                        })
                     } ?: run {
-                        Text(text = "Loading person details...")
+                        Text(text = "Загрузка информации о человеке...")
                     }
                 }
             }
-            composable("chat") { // Добавленный экран чата
+            composable("chat") {
                 currentDestination = "chat"
                 ChatScreen()
             }
             
-            // Добавляем экран настроек уведомлений
+            // Экран настроек уведомлений
             composable("notificationSettings") {
                 currentDestination = "notificationSettings"
                 NotificationSettingsScreen(
@@ -146,23 +152,7 @@ fun LostAnimalsApp() {
                 )
             }
             
-            // Добавляем экран карты
-            composable("map") {
-                currentDestination = "map"
-                MapScreen(
-                    onNavigateBack = {
-                        navController.popBackStack()
-                    },
-                    onPersonClick = { personId ->
-                        navController.navigate("personDetail/$personId")
-                    },
-                    onNavigateToAddPerson = {
-                        navController.navigate("addPerson")
-                    }
-                )
-            }
-            
-            // Добавляем экран распознавания
+            // Экран распознавания
             composable("recognition") {
                 currentDestination = "recognition"
                 RecognitionScreen(
@@ -174,6 +164,7 @@ fun LostAnimalsApp() {
                     }
                 )
             }
+
         }
     }
 }

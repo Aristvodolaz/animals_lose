@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.application.lose_animals.R
 import com.application.lose_animals.data.model.Person
+import com.application.lose_animals.ui.theme.CardShape
+import com.application.lose_animals.ui.theme.OrangeLight
 
 @Composable
 fun PersonCard(
@@ -39,7 +41,7 @@ fun PersonCard(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .shadow(
                 elevation = 8.dp,
-                shape = RoundedCornerShape(16.dp),
+                shape = CardShape,
                 spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
             )
             .clickable { 
@@ -47,7 +49,7 @@ fun PersonCard(
                 onClick()
             }
             .animateContentSize(),
-        shape = RoundedCornerShape(16.dp),
+        shape = CardShape,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         )
@@ -128,6 +130,11 @@ fun PersonCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
+                        .background(
+                            color = OrangeLight.copy(alpha = 0.1f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(12.dp)
                 ) {
                     Text(
                         text = "Дополнительная информация",

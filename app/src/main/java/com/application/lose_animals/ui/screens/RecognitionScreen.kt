@@ -91,15 +91,18 @@ fun RecognitionScreen(
             selectedImageBitmap = null
             try {
                 val bitmap = InputImage.fromFilePath(context, it).bitmapInternal
-                analyzeImage(bitmap, persons) { results, matches ->
-                    recognitionResults = results
-                    matchedPersons = matches
-                    isAnalyzing = false
-                    if (matches.isEmpty() && results.isNotEmpty()) {
-                        showNoMatchDialog = true
+                bitmap?.let { safeBitmap ->
+                    analyzeImage(safeBitmap, persons) { results, matches ->
+                        recognitionResults = results
+                        matchedPersons = matches
+                        isAnalyzing = false
+                        if (matches.isEmpty() && results.isNotEmpty()) {
+                            showNoMatchDialog = true
+                        }
                     }
+                } ?: run {
+                    isAnalyzing = false
                 }
-                isAnalyzing = true
             } catch (e: IOException) {
                 isAnalyzing = false
             }
@@ -431,7 +434,7 @@ fun MatchedPersonItem(
             
             Spacer(modifier = Modifier.width(8.dp))
             
-            StatusChip(status = person.status)
+            RecognitionStatusChip(status = person.status)
         }
     }
 }
@@ -538,7 +541,7 @@ private fun analyzeImage(
 }
 
 @Composable
-fun StatusChip(status: String) {
+fun RecognitionStatusChip(status: String) {
     val (backgroundColor, contentColor) = when (status.lowercase()) {
         "пропавший" -> MaterialTheme.colorScheme.errorContainer to MaterialTheme.colorScheme.onErrorContainer
         "найден" -> MaterialTheme.colorScheme.tertiaryContainer to MaterialTheme.colorScheme.onTertiaryContainer

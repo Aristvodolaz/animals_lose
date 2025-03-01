@@ -1,5 +1,7 @@
 package com.application.lose_animals.di
 
+import com.application.lose_animals.data.api.DaDataApiService
+import com.application.lose_animals.data.repository.AddressRepository
 import com.application.lose_animals.data.repository.AuthRepositoryImpl
 import com.application.lose_animals.data.repository.PersonRepositoryImpl
 import com.application.lose_animals.data.source.FirebaseSource
@@ -66,4 +68,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUpdatePersonUseCase(repository: PersonRepository): UpdatePersonUseCase = UpdatePersonUseCase(repository)
+    
+    @Provides
+    @Singleton
+    fun provideAddressRepository(daDataApiService: DaDataApiService): AddressRepository = AddressRepository(daDataApiService)
 }

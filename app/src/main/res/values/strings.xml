@@ -1,7 +1,17 @@
 <resources>
-    <string name="app_name">lose_people</string>
+    <string name="app_name">Поиск пропавших</string>
     <!-- Notification Strings -->
     <string name="notification_channel_name">Уведомления о пропавших людях поблизости</string>
     <string name="notification_channel_description">Уведомления о пропавших и найденных людях рядом с вами</string>
     <string name="notification_service_running">Сервис уведомлений о пропавших людях активен</string>
+    
+    <!-- Общие строки -->
+    <string name="missing_person">Пропавший человек</string>
+    <string name="missing_people">Пропавшие люди</string>
+    <string name="add_missing_person">Добавить пропавшего</string>
+    <string name="search_missing_person">Поиск пропавших</string>
+    <string name="emergency_help">Экстренная помощь</string>
+    <string name="profile">Профиль</string>
+    <string name="last_seen">Последний раз видели</string>
+    <string name="help_find">Помогите найти</string>
 </resources>
