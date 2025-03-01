@@ -8,6 +8,6 @@ interface PersonRepository {
     fun getUserPersons(userId: String): Flow<List<Person>>
     suspend fun addPerson(person: Person)
     suspend fun getPersonById(id: String): Person?
-    suspend fun updatePerson(person: Person)
+    suspend fun updatePerson(person: Person, updatedBy: String) // Добавлен updatedBy
     suspend fun deletePerson(personId: String)
 }

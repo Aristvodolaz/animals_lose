@@ -25,6 +25,15 @@ android {
 
     buildTypes {
         release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("debug") // Для тестирования, в продакшене нужно настроить релизный ключ
+        }
+        debug {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -65,6 +74,9 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.image.labeling.common)
+    implementation(libs.image.labeling.default.common)
+    implementation(libs.play.services.mlkit.face.detection)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -138,6 +150,64 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.9.3")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 
     implementation ("androidx.compose.material:material:1.7.5")
+
+    // Material Design 3
+    implementation("com.google.android.material:material:1.11.0")
+    
+    // Constraint Layout
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    
+    // Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    
+    // Lifecycle components
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    
+    // Coil for image loading
+    implementation("io.coil-kt:coil:2.5.0")
+
+    // Splash Screen API
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // ML Kit для распознавания лиц и изображений
+    implementation("com.google.mlkit:face-detection:16.1.5")
+    implementation("com.google.mlkit:image-labeling:17.0.7")
+    implementation("com.google.mlkit:image-labeling-common:18.1.0")
+    
+    // ActivityResultContracts для запроса разрешений
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    
+    // Дополнительные компоненты Compose
+    implementation("androidx.compose.foundation:foundation:1.7.5")
+    implementation("androidx.compose.material:material:1.7.5")
+    implementation("androidx.compose.animation:animation:1.7.5")
+
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
+    // Зависимости для работы с сетью - Retrofit2
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
+
+    // OkHttp3 и его компоненты
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation ("com.squareup.okhttp3:okhttp-urlconnection:4.10.0")
+
+    // Gson для работы с JSON
+    implementation ("com.google.code.gson:gson:2.9.0")
+
+    // Coroutines для асинхронной работы с сетью
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 }

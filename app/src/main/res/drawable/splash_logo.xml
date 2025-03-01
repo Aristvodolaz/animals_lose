@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="240"
+    android:viewportHeight="240">
+    
+    <!-- Внешний круг -->
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M120,120m-120,0a120,120 0,1 1,240 0a120,120 0,1 1,-240 0" />
+    
+    <!-- Внутренний круг -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M120,120m-100,0a100,100 0,1 1,200 0a100,100 0,1 1,-200 0" />
+    
+    <!-- Силуэт человека -->
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M120,60 A20,20 0 0 1 140,80 A20,20 0 0 1 120,100 A20,20 0 0 1 100,80 A20,20 0 0 1 120,60 Z" />
+    
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M120,100 L100,160 L110,160 L110,180 L130,180 L130,160 L140,160 Z" />
+    
+    <!-- Руки -->
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M120,110 L90,140 L100,150 L120,120 L140,150 L150,140 Z" />
+    
+    <!-- Текст "FindMe" -->
+    <path
+        android:fillColor="#FF5722"
+        android:pathData="M70,200 L70,170 L90,170 L90,180 L80,180 L80,185 L90,185 L90,195 L70,195 M95,200 L95,170 L105,170 L105,190 L115,190 L115,200 Z M120,200 L120,170 L140,170 L140,180 L130,180 L130,200 Z M145,200 L145,170 L165,170 L165,180 L155,180 L155,185 L165,185 L165,195 L145,195 Z" />
+</vector> 

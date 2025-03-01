@@ -31,8 +31,9 @@ class PersonRepositoryImpl @Inject constructor(
     }
 
     // Update a person (calls FirebaseSource)
-    override suspend fun updatePerson(person: Person) {
-        firebaseSource.updatePerson(person) // Calling FirebaseSource's update method
+// Обновленный метод updatePerson в PersonRepositoryImpl.kt
+    override suspend fun updatePerson(person: Person, updatedBy: String) {
+        firebaseSource.updatePerson(person, updatedBy) // Передаем updatedBy
     }
 
     // Delete a person (calls FirebaseSource)

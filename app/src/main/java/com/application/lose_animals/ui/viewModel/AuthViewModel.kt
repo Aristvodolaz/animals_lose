@@ -49,6 +49,7 @@ class AuthViewModel @Inject constructor(
 // Состояния аутентификации
 sealed class AuthState {
     object Idle : AuthState()
+    object Loading : AuthState()
     object Authenticated : AuthState()
     object Registered : AuthState()
     data class Error(val message: String) : AuthState()

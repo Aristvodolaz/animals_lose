@@ -19,6 +19,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import com.application.lose_animals.ui.theme.Gray100
+import com.application.lose_animals.ui.theme.Gray300
+import com.application.lose_animals.ui.theme.Gray700
+import com.application.lose_animals.ui.theme.TextFieldShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,18 +38,18 @@ fun CustomTextField(
     TextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = Color.Gray) },
+        label = { Text(label, color = Gray700) },
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .background(
                 Brush.linearGradient(
                     colors = listOf(
-                        Color(0xFFF3F4F6), // Light gray
-                        Color(0xFFFFFFFF)  // White
+                        Gray100, // Светло-серый
+                        Color.White  // Белый
                     )
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = TextFieldShape
             ),
         visualTransformation = if (isPassword && !passwordVisible) {
             PasswordVisualTransformation()
@@ -80,9 +84,9 @@ fun CustomTextField(
             unfocusedIndicatorColor = Color.Transparent,
             containerColor = Color.Transparent,
             cursorColor = MaterialTheme.colorScheme.primary,
-            focusedTextColor = Color.Black
+            focusedTextColor = MaterialTheme.colorScheme.onSurface
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = TextFieldShape
     )
 }
 
