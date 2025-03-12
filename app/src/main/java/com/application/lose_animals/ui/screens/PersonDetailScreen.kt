@@ -59,7 +59,7 @@ fun PersonDetailScreen(
             LargeTopAppBar(
                 title = {
                     Text(
-                        "Информация о животном",
+                        "Информация",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
