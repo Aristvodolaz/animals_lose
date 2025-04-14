@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.services)
     alias(libs.plugins.dagger.hilt)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -96,7 +96,7 @@ dependencies {
     implementation ("androidx.compose.material:material-icons-extended:1.7.5")
     // Hilt для внедрения зависимостей
     implementation("com.google.dagger:hilt-android:2.37")
-    kapt("com.google.dagger:hilt-compiler:2.37")
+    ksp("com.google.dagger:hilt-compiler:2.37")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation ("com.google.dagger:hilt-android-gradle-plugin:2.37")
 
@@ -126,7 +126,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

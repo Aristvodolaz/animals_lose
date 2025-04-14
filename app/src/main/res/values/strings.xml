@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Поиск пропавших</string>
+    <string name="app_name">Потерянные люди</string>
     <!-- Notification Strings -->
     <string name="notification_channel_name">Уведомления о пропавших людях поблизости</string>
     <string name="notification_channel_description">Уведомления о пропавших и найденных людях рядом с вами</string>
@@ -14,4 +14,5 @@
     <string name="profile">Профиль</string>
     <string name="last_seen">Последний раз видели</string>
     <string name="help_find">Помогите найти</string>
+    <string name="widget_description">Виджет для отображения информации о потерянных людях</string>
 </resources>

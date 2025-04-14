@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/widget_background">
+
+    <TextView
+        android:id="@+id/widget_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Потерянные люди"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:padding="4dp"/>
+
+    <TextView
+        android:id="@+id/widget_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Нажмите для обновления списка"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:padding="4dp"/>
+
+    <Button
+        android:id="@+id/widget_add_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сообщить о пропаже"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout> 
