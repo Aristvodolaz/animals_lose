@@ -61,10 +61,6 @@ fun PersonListScreen(
     var showFilterDialog by remember { mutableStateOf(false) }
     var selectedRadius by remember { mutableStateOf(50.0) }
     
-    // Добавляем состояние для выбранной категории
-    var selectedCategory by remember { mutableStateOf("Все") }
-    val categories = listOf("Все", "Взрослые", "Дети", "Пожилые", "Недавние")
-
     val locationHelper = remember { LocationHelper(context) }
 
     LaunchedEffect(Unit) {
@@ -80,18 +76,10 @@ fun PersonListScreen(
         )
     }
 
-    // Фильтрация по категории и радиусу
+    // Фильтрация по радиусу
     val filteredPersons = persons.filter {
         val distanceOk = distanceBetween(userLat, userLon, it.latitude, it.longitude) <= selectedRadius
-//        val categoryOk = when (selectedCategory) {
-//            "Взрослые" -> it.age in 18..59
-//            "Дети" -> it.age < 18
-//            "Пожилые" -> it.age >= 60
-//            "Недавние" -> it.lastSeenTimestamp > System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000) // 7 дней
-//            else -> true
-//        }
         distanceOk
-                //&& categoryOk
     }
 
     Scaffold(
@@ -172,14 +160,6 @@ fun PersonListScreen(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
             
-            // Табы категорий
-            CategoryTabs(
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onCategorySelected = { selectedCategory = it },
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-
             AnimatedVisibility(
                 visible = filteredPersons.isEmpty(),
                 enter = fadeIn() + expandVertically(),
@@ -319,51 +299,6 @@ fun PersonListScreen(
                 containerColor = MaterialTheme.colorScheme.surface,
                 shape = MaterialTheme.shapes.large
             )
-        }
-    }
-}
-
-@Composable
-fun CategoryTabs(
-    categories: List<String>,
-    selectedCategory: String,
-    onCategorySelected: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(categories) { category ->
-            val isSelected = category == selectedCategory
-            Surface(
-                onClick = { onCategorySelected(category) },
-                shape = RoundedCornerShape(16.dp),
-                color = if (isSelected) 
-                    MaterialTheme.colorScheme.primaryContainer 
-                else 
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                contentColor = if (isSelected) 
-                    MaterialTheme.colorScheme.onPrimaryContainer 
-                else 
-                    MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.height(36.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = category,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                        fontSize = 12.sp
-                    )
-                }
-            }
         }
     }
 }
